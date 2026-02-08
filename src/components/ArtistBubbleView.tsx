@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import * as d3 from 'd3'
 
-interface ArtistBubble {
+interface ArtistBubble extends d3.SimulationNodeDatum {
     id: string
     name: string
     trackCount: number
@@ -11,6 +11,8 @@ interface ArtistBubble {
     radius: number
     x?: number
     y?: number
+    fx?: number | null
+    fy?: number | null
 }
 
 interface ArtistBubbleViewProps {
@@ -126,6 +128,33 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
             .style("text-shadow", "0 2px 4px rgba(0,0,0,0.8)")
             .style("pointer-events", "none")
 
+        // Add zoom behavior
+        const zoom = d3.zoom<SVGSVGElement, unknown>()
+            .scaleExtent([0.1, 5])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform)
+            })
+        svg.call(zoom)
+
+        // Add drag behavior
+        const drag = d3.drag<SVGGElement, ArtistBubble>()
+            .on("start", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0.3).restart()
+                d.fx = d.x
+                d.fy = d.y
+            })
+            .on("drag", (event, d) => {
+                d.fx = event.x
+                d.fy = event.y
+            })
+            .on("end", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0)
+                d.fx = null
+                d.fy = null
+            })
+
+        bubbles.call(drag as any)
+
         simulation.on("tick", () => {
             bubbles.attr("transform", d => `translate(${d.x},${d.y})`)
         })
@@ -133,7 +162,7 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
         return () => {
             simulation.stop()
         }
-    }, [bubbleData]) // Removed onArtistClick from dependencies
+    }, [bubbleData])
 
     return (
         <section style={{
@@ -149,8 +178,32 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
                 ref={svgRef}
                 width="100%"
                 height="100%"
-                style={{ overflow: 'visible' }}
+                style={{ overflow: 'visible', cursor: 'grab' }}
             />
+
+            {/* Navigation Hint */}
+            <div style={{
+                position: 'fixed',
+                bottom: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(10px)',
+                padding: '10px 20px',
+                borderRadius: 'var(--radius-full)',
+                fontSize: '0.8rem',
+                color: 'var(--foreground-muted)',
+                pointerEvents: 'none',
+                zIndex: 10,
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                gap: '15px',
+                whiteSpace: 'nowrap'
+            }}>
+                <span>🖱️ Drag to Move </span>
+                <span>🔍 Scroll to Zoom</span>
+                <span>🖐️ Pan for More</span>
+            </div>
         </section>
     )
 }
