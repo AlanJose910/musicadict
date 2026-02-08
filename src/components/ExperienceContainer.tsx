@@ -52,13 +52,41 @@ export default function ExperienceContainer({ tracks, artists }: ExperienceConta
                 height: '100%',
                 opacity: isTransitioning ? 0 : 1,
                 transition: 'opacity 0.4s ease-in-out',
-                display: view === 'bubbles' ? 'block' : 'none'
+                display: view === 'bubbles' ? 'block' : 'none',
+                position: 'relative'
             }}>
                 <ArtistBubbleView
                     tracks={tracks}
                     artists={artists}
                     onArtistClick={handleArtistClick}
                 />
+
+                {/* Home Button in Bubbles View */}
+                <button
+                    onClick={handleGoHome}
+                    style={{
+                        position: 'absolute',
+                        top: '20px',
+                        right: '20px',
+                        background: 'rgba(29, 185, 84, 0.2)',
+                        border: '1px solid var(--primary)',
+                        color: 'var(--primary)',
+                        padding: '10px 16px',
+                        borderRadius: 'var(--radius-full)',
+                        cursor: 'pointer',
+                        zIndex: 100,
+                        backdropFilter: 'blur(10px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontWeight: 600,
+                        fontSize: '0.85rem',
+                        transition: 'all 0.2s ease'
+                    }}
+                >
+                    <Home size={16} />
+                    <span className="desktop-only">New Playlist</span><span className="mobile-only">New</span>
+                </button>
             </div>
 
             <div style={{
