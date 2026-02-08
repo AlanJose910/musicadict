@@ -1,0 +1,33 @@
+.container {
+    width: 100%;
+    position: relative;
+}
+
+.legend {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--foreground-muted);
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.dotArtist {
+    width: 12px;
+    height: 12px;
+    background-color: var(--primary);
+    border-radius: 50%;
+}
+
+.dotTrack {
+    width: 12px;
+    height: 12px;
+    background-color: var(--foreground-muted);
+    border-radius: 50%;
+}

@@ -1,0 +1,72 @@
+.container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.th {
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--foreground-muted);
+    border-bottom: 1px solid var(--background-elevated);
+    font-weight: 500;
+}
+
+.tr:hover {
+    background-color: var(--background-elevated);
+}
+
+.tdIndex {
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--foreground-muted);
+    width: 40px;
+}
+
+.tdTitle {
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.albumArt {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.textStack {
+    display: flex;
+    flex-direction: column;
+}
+
+.trackName {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+.artistName {
+    color: var(--foreground-muted);
+    font-size: 0.8rem;
+}
+
+.tdAlbum {
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--foreground-muted);
+}
+
+.tdDuration {
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--foreground-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
