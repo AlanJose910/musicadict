@@ -35,6 +35,8 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
     const nodesRef = useRef<Node[]>([])
     const linksRef = useRef<Link[]>([])
 
+    const isMobile = dimensions.width < 768
+
     useEffect(() => {
         if (!containerRef.current) return
 
@@ -75,6 +77,9 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
             t.artists.some((a: any) => exploredArtistIds.includes(a.id))
         )
 
+        const isMobile = width < 768
+        const nodeScale = isMobile ? 0.7 : 1
+
         relevantTracks.forEach(track => {
             if (!track || !track.id) return;
 
@@ -84,7 +89,7 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
                     id: track.id,
                     group: 'track',
                     name: track.name,
-                    radius: 10,
+                    radius: 8 * nodeScale,
                     type: 'Track',
                 })
             }
@@ -99,7 +104,7 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
                         group: 'artist',
                         name: artist.name,
                         image: enrichedArtist?.images?.[2]?.url || enrichedArtist?.images?.[0]?.url,
-                        radius: artist.id === lastSelectedId ? 50 : 30,
+                        radius: (artist.id === lastSelectedId ? 50 : 30) * nodeScale,
                         type: 'Artist',
                     })
                 }
@@ -160,10 +165,10 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
         })
 
         const simulation = d3.forceSimulation<Node>(nodes)
-            .force("link", d3.forceLink<Node, Link>(newLinks).id(d => d.id).distance(100))
-            .force("charge", d3.forceManyBody().strength(-800))
+            .force("link", d3.forceLink<Node, Link>(newLinks).id(d => d.id).distance(isMobile ? 60 : 100))
+            .force("charge", d3.forceManyBody().strength(isMobile ? -400 : -800))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collide", d3.forceCollide<Node>().radius(d => d.radius + 40))
+            .force("collide", d3.forceCollide<Node>().radius(d => d.radius + (isMobile ? 20 : 40)))
 
         simulationRef.current = simulation
 
@@ -251,10 +256,10 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
 
         node.select("text")
             .text(d => d.name)
-            .attr("font-size", d => d.id === lastSelectedId ? "16px" : "10px")
+            .attr("font-size", d => (d.id === lastSelectedId ? (isMobile ? 12 : 16) : (isMobile ? 8 : 10)) + "px")
             .attr("fill", "white")
             .attr("text-anchor", "middle")
-            .attr("dy", d => d.group === 'artist' ? d.radius + 20 : 25) // Artists labels lower, track labels closer to icon
+            .attr("dy", d => d.group === 'artist' ? d.radius + (isMobile ? 12 : 20) : (isMobile ? 18 : 25)) // Artists labels lower, track labels closer to icon
             .style("pointer-events", "none")
             .style("text-shadow", "0 2px 4px rgba(0,0,0,1)")
             .style("font-weight", d => d.group === 'artist' ? "bold" : "normal")
@@ -283,10 +288,11 @@ export default function NetworkGraph({ tracks, artists, exploredArtistIds, lastS
     return (
         <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative', background: 'transparent' }}>
             <div style={{
-                position: 'absolute', top: 20, right: 20, zIndex: 10,
-                textAlign: 'right', pointerEvents: 'none'
+                position: 'absolute', top: isMobile ? 70 : 20, right: 20, zIndex: 10,
+                textAlign: 'right', pointerEvents: 'none',
+                maxWidth: isMobile ? '70%' : 'none'
             }}>
-                <h2 style={{ fontSize: '2rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: 0, textShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
+                <h2 className="mobile-header-text" style={{ fontSize: '2rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: 0, textShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
                     {lastSelectedId ? artists?.find(a => a.id === lastSelectedId)?.name : "Relationship Graph"}
                 </h2>
                 <div style={{ color: 'var(--primary)', fontSize: '0.8rem', letterSpacing: '2px', fontWeight: 700 }}>

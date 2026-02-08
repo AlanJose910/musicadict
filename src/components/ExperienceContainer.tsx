@@ -66,85 +66,91 @@ export default function ExperienceContainer({ tracks, artists }: ExperienceConta
                 height: '100%',
                 opacity: (view === 'graph' && !isTransitioning) ? 1 : 0,
                 transition: 'opacity 0.4s ease-in-out',
-                display: view === 'graph' ? 'grid' : 'none',
-                gridTemplateColumns: 'minmax(0, 1fr) 300px',
+                display: view === 'graph' ? 'flex' : 'none',
+                flexDirection: 'column',
                 background: 'rgba(0,0,0,0.8)',
                 backdropFilter: 'blur(20px)'
             }}>
-                <div style={{ position: 'relative', overflow: 'hidden' }}>
-                    <NetworkGraph
-                        tracks={tracks}
-                        artists={artists}
-                        exploredArtistIds={exploredArtistIds}
-                        lastSelectedId={lastSelectedId}
-                        onArtistSelect={handleGraphExpand}
-                    />
-                    <button
-                        onClick={() => setView('bubbles')}
-                        style={{
+                <div style={{
+                    display: 'flex',
+                    flex: 1,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    flexDirection: 'row' // Will be column on mobile via global CSS if I can, but let's stick to inline for now
+                }}>
+                    <div style={{ flex: 1, position: 'relative' }}>
+                        <NetworkGraph
+                            tracks={tracks}
+                            artists={artists}
+                            exploredArtistIds={exploredArtistIds}
+                            lastSelectedId={lastSelectedId}
+                            onArtistSelect={handleGraphExpand}
+                        />
+
+                        {/* Mobile Optimized Controls Container */}
+                        <div style={{
                             position: 'absolute',
-                            top: '20px',
-                            left: '20px',
-                            background: 'rgba(255,255,255,0.1)',
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            color: 'white',
-                            padding: '8px 16px',
-                            borderRadius: 'var(--radius-full)',
-                            cursor: 'pointer',
-                            zIndex: 100,
-                            backdropFilter: 'blur(10px)',
+                            top: '15px',
+                            left: '15px',
+                            right: '15px',
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.2)'
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
-                        }}
-                    >
-                        ← Back to Universe
-                    </button>
-                    <button
-                        onClick={handleGoHome}
-                        style={{
-                            position: 'absolute',
-                            top: '20px',
-                            right: '340px',
-                            background: 'rgba(29, 185, 84, 0.2)',
-                            border: '1px solid var(--primary)',
-                            color: 'var(--primary)',
-                            padding: '8px 16px',
-                            borderRadius: 'var(--radius-full)',
-                            cursor: 'pointer',
+                            justifyContent: 'space-between',
                             zIndex: 100,
-                            backdropFilter: 'blur(10px)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            fontWeight: 600,
-                            transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'var(--primary)'
-                            e.currentTarget.style.color = 'black'
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(29, 185, 84, 0.2)'
-                            e.currentTarget.style.color = 'var(--primary)'
-                        }}
-                    >
-                        <Home size={16} />
-                        New Playlist
-                    </button>
+                            pointerEvents: 'none'
+                        }}>
+                            <button
+                                onClick={() => setView('bubbles')}
+                                style={{
+                                    background: 'rgba(255,255,255,0.1)',
+                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    color: 'white',
+                                    padding: '8px 12px',
+                                    borderRadius: 'var(--radius-full)',
+                                    cursor: 'pointer',
+                                    backdropFilter: 'blur(10px)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    fontSize: '0.8rem',
+                                    pointerEvents: 'all'
+                                }}
+                            >
+                                ← <span className="desktop-only">Back to Universe</span><span className="mobile-only">Back</span>
+                            </button>
+
+                            <button
+                                onClick={handleGoHome}
+                                style={{
+                                    background: 'rgba(29, 185, 84, 0.2)',
+                                    border: '1px solid var(--primary)',
+                                    color: 'var(--primary)',
+                                    padding: '8px 12px',
+                                    borderRadius: 'var(--radius-full)',
+                                    cursor: 'pointer',
+                                    backdropFilter: 'blur(10px)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 600,
+                                    pointerEvents: 'all'
+                                }}
+                            >
+                                <Home size={14} />
+                                <span className="desktop-only">New Playlist</span><span className="mobile-only">New</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Sidebar with mobile hiding */}
+                    <div className="desktop-only" style={{ width: '300px', display: 'flex' }}>
+                        <SidebarArtistList
+                            artists={artists}
+                            selectedId={lastSelectedId}
+                            onSelect={handleSidebarSelect}
+                        />
+                    </div>
                 </div>
-                <SidebarArtistList
-                    artists={artists}
-                    selectedId={lastSelectedId}
-                    onSelect={handleSidebarSelect}
-                />
             </div>
         </div>
     )

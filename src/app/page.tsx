@@ -41,54 +41,55 @@ export default function LoginPage() {
       overflow: 'hidden',
       position: 'relative'
     }}>
-      <div className="animate-entrance" style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}>
+      <div className="animate-entrance" style={{ textAlign: 'center', marginBottom: 'var(--spacing-xl)' }}>
         <div className="animate-logo" style={{
           display: 'inline-flex',
           background: 'rgba(29, 185, 84, 0.1)',
-          padding: '20px',
+          padding: '15px',
           borderRadius: '50%',
           marginBottom: 'var(--spacing-md)',
           border: '1px solid rgba(29, 185, 84, 0.3)'
         }}>
-          <Music2 size={48} color="#1DB954" />
+          <Music2 size={32} color="#1DB954" />
         </div>
 
-        <h1 className="animate-text" style={{
-          fontSize: '4rem',
+        <h1 className="animate-text main-title" style={{
           fontWeight: 900,
           textTransform: 'uppercase',
           margin: 0,
           background: 'linear-gradient(to bottom, #fff, #666)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
+          letterSpacing: '-1px'
         }}>
           Musicadict
         </h1>
-        <p className="animate-fade" style={{ color: 'var(--foreground-muted)', fontSize: '1.2rem', marginTop: 'var(--spacing-sm)' }}>
+        <p className="animate-fade" style={{ color: 'var(--foreground-muted)', fontSize: '1rem', marginTop: 'var(--spacing-sm)' }}>
           Your music universe, visualized.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="animate-input" style={{
         width: '100%',
-        maxWidth: '600px',
-        position: 'relative'
+        maxWidth: '500px',
+        position: 'relative',
+        padding: '0 var(--spacing-md)'
       }}>
         <div style={{ position: 'relative' }}>
           <input
             type="text"
-            placeholder="Paste a Spotify playlist link..."
+            placeholder="Playlist link..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             style={{
               width: '100%',
-              padding: '20px 30px',
-              paddingRight: '70px',
+              padding: '16px 24px',
+              paddingRight: '60px',
               background: 'rgba(255,255,255,0.05)',
               border: '1px solid rgba(255,255,255,0.1)',
               borderRadius: 'var(--radius-full)',
               color: 'white',
-              fontSize: '1.2rem',
+              fontSize: '1rem',
               outline: 'none',
               transition: 'all 0.3s ease',
               backdropFilter: 'blur(10px)'
@@ -98,31 +99,31 @@ export default function LoginPage() {
             type="submit"
             style={{
               position: 'absolute',
-              right: '10px',
+              right: '6px',
               top: '50%',
               transform: 'translateY(-50%)',
               background: 'var(--primary)',
               border: 'none',
               borderRadius: '50%',
-              width: '50px',
-              height: '50px',
+              width: '44px',
+              height: '44px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: '0 0 20px rgba(29, 185, 84, 0.4)'
+              boxShadow: '0 0 15px rgba(29, 185, 84, 0.3)'
             }}
           >
-            <Search size={24} color="black" />
+            <Search size={20} color="black" />
           </button>
         </div>
       </form>
 
-      <div className="animate-footer" style={{ marginTop: 'var(--spacing-2xl)', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)', alignItems: 'center' }}>
+      <div className="animate-footer" style={{ marginTop: 'var(--spacing-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
-          <div style={{ height: '1px', width: '40px', background: 'rgba(255,255,255,0.1)' }}></div>
-          <span style={{ fontSize: '0.8rem', color: 'var(--foreground-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Or</span>
-          <div style={{ height: '1px', width: '40px', background: 'rgba(255,255,255,0.1)' }}></div>
+          <div style={{ height: '1px', width: '30px', background: 'rgba(255,255,255,0.1)' }}></div>
+          <span style={{ fontSize: '0.7rem', color: 'var(--foreground-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Or</span>
+          <div style={{ height: '1px', width: '30px', background: 'rgba(255,255,255,0.1)' }}></div>
         </div>
 
         <button
@@ -130,11 +131,11 @@ export default function LoginPage() {
           style={{
             background: 'transparent',
             border: '1px solid rgba(255,255,255,0.1)',
-            padding: '12px 24px',
+            padding: '10px 20px',
             borderRadius: 'var(--radius-full)',
             color: 'white',
             cursor: 'pointer',
-            fontSize: '0.9rem',
+            fontSize: '0.8rem',
             transition: 'all 0.3s ease',
             backdropFilter: 'blur(5px)'
           }}

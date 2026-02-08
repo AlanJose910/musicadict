@@ -37,9 +37,11 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
             })
         })
 
+        const isMobile = window.innerWidth < 768
         const data: ArtistBubble[] = artists.map(artist => {
             const count = artistCounts.get(artist.id) || 0
-            const radius = Math.min(150, Math.max(50, count * 15 + 35))
+            const baseRadius = Math.min(150, Math.max(50, count * 15 + 35))
+            const radius = isMobile ? baseRadius * 0.6 : baseRadius
             return {
                 id: artist.id,
                 name: artist.name,
@@ -63,12 +65,14 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
 
         const g = svg.append("g")
 
+        const isMobile = width < 768
+
         // Stronger centering forces to prevent left-side clustering
         const simulation = d3.forceSimulation<ArtistBubble>(bubbleData)
-            .force("x", d3.forceX(width / 2).strength(0.08))
-            .force("y", d3.forceY(height / 2).strength(0.08))
-            .force("collide", d3.forceCollide<ArtistBubble>(d => d.radius + 15).strength(0.7))
-            .force("charge", d3.forceManyBody().strength(10))
+            .force("x", d3.forceX(width / 2).strength(isMobile ? 0.15 : 0.08))
+            .force("y", d3.forceY(height / 2).strength(isMobile ? 0.15 : 0.08))
+            .force("collide", d3.forceCollide<ArtistBubble>(d => d.radius + (isMobile ? 5 : 15)).strength(0.7))
+            .force("charge", d3.forceManyBody().strength(isMobile ? 5 : 10))
             .alphaDecay(0.02) // Slower decay for smoother settling
 
         const defs = svg.append("defs")
@@ -115,9 +119,9 @@ export default function ArtistBubbleView({ tracks, artists, onArtistClick }: Art
         bubbles.append("text")
             .text(d => d.name)
             .attr("text-anchor", "middle")
-            .attr("dy", d => d.radius + 25)
+            .attr("dy", d => d.radius + (isMobile ? 18 : 25))
             .attr("fill", "white")
-            .style("font-size", "14px")
+            .style("font-size", isMobile ? "10px" : "14px")
             .style("font-weight", "600")
             .style("text-shadow", "0 2px 4px rgba(0,0,0,0.8)")
             .style("pointer-events", "none")

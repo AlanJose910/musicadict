@@ -269,3 +269,49 @@ a:hover {
 .pulse-node {
   filter: drop-shadow(0 0 10px var(--primary));
 }
+/* Base Layout Helpers */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .mobile-sidebar-hidden {
+    display: none !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-header-text {
+    font-size: 1.2rem !important;
+  }
+
+  .mobile-fixed-top {
+    position: fixed !important;
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+  }
+}
+
+.mobile-only {
+  display: none;
+}
